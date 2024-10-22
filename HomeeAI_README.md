@@ -23,19 +23,7 @@ Additional dependencies are automatically downloaded and built by the system via
 - [Multi-View Environment (MVE)](https://github.com/nmoehrle/mve.git)  
 - [mapMAP](https://github.com/dthuerck/mapmap_cpu.git)  
 
-**Note:** We may need to update MVE to the latest version.
-
-### Install Legacy oneTBB
-
-The current code requires **oneTBB 2019_U9**, which needs to be downloaded and
-built manually:
-
-```shell
-wget https://github.com/oneapi-src/oneTBB/archive/refs/tags/2019_U9.tar.gz
-tar -xvzf 2019_U9.tar.gz
-cd oneTBB-2019_U9
-make -j
-```
+**Note:** It may be better to update Eigen and MVE to the latest version.
 
 ## Build MVS-Texturing
 
@@ -45,18 +33,7 @@ Use the following command to build:
 mkdir -p build && cd build && cmake .. && make -j; cd ..
 ```
 
-### Resolve oneTBB Issues
-
-If there are issues related to oneTBB, pass the correct paths to the TBB headers
-and libraries using CMake flags. Note that the following code block does NOT work.
-
-```shell
-cmake .. -DTBB_INCLUDE_DIRS=../oneTBB-2019_U9/include \
-         -DTBB_LIBRARIES=../oneTBB-2019_U9/build/linux_intel64_gcc_cc12.3.0_libc2.35_kernel6.5.0_release
-```
-
-A better way to resolve issues related to building the project would be
-modularization. **TODO:** Modularize external libraries and use modern CMake
+**TODO:** Modularize external libraries and use modern CMake
 commands.
 
 ## Prepare 3D Model and Camera Parameters
@@ -137,7 +114,3 @@ textured_mesh_view_selection_material0001_map_Kd.png
 
 In general, it's better not to skip global and local seam leveling, as they
 produce more visually appealing results with fewer seams in the mesh textures.
-
-## CMake references
-https://gist.github.com/mbinna/c61dbb39bca0e4fb7d1f73b0d66a4fd1
-https://github.com/friendlyanon/cmake-init
