@@ -13,7 +13,10 @@ To build and run `mvs-texturing`, ensure the following dependencies are installe
 - **Git**  
 - **Make**  
 - **GCC/G++** >= 12  
-- **Libraries**: `libpng`, `libjpeg`, `libtiff`
+- **Libraries**: `libpng`, `libjpeg`, `libtiff` and `libtbb` (may not be required)
+  ```shell
+  apt update && apt install libpng-dev libjpeg-dev libtiff-dev libtbb-dev
+  ```
 
 Additional dependencies are automatically downloaded and built by the system via
 `elibs/CMakeLists.txt`:
