@@ -1,0 +1,49 @@
+# This workflow is derived from github.com/actions/starter-workflows/ci/cmake-single-platform.yml
+name: HomeeAI's mvs-texturing on Ubuntu
+
+on:
+  release:
+    types: [published] # Trigger workflow when a release is published
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  PLATFORM_NAME: ubuntu-22.04 # Define the platform name and version here
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt update -y
+        sudo apt install -y --no-install-recommends libpng-dev libjpeg-dev libtiff-dev libtbb-dev
+        sudo apt purge -y --auto-remove
+        sudo rm -rf /var/lib/apt/lists/*
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build and Install
+      run: |
+        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --parallel $(nproc)
+        cmake --install ${{github.workspace}}/build --prefix ${{github.workspace}}/dist
+
+    - name: Package
+      run: |
+        cd ${{github.workspace}}/dist
+        tar -czvf ${{github.workspace}}/homeeai-mvs-texturing-${{ env.PLATFORM_NAME }}.tar.gz .
+
+    - name: Upload Release Asset
+      if: ${{ github.event_name == 'release' }}
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ github.workspace }}/homeeai-mvs-texturing-${{ env.PLATFORM_NAME }}.tar.gz
+        asset_name: homeeai-mvs-texturing-${{ env.PLATFORM_NAME }}.tar.gz
+        asset_content_type: application/gzip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
