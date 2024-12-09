@@ -13,6 +13,7 @@ env:
 jobs:
   build-and-release:
     runs-on: ubuntu-22.04
+    timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v4
@@ -38,7 +39,6 @@ jobs:
         tar -czvf ${{github.workspace}}/homeeai-mvs-texturing-${{ env.PLATFORM_NAME }}.tar.gz .
 
     - name: Upload Release Asset
-      if: ${{ github.event_name == 'release' }}
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ github.event.release.upload_url }}
