@@ -13,7 +13,7 @@ To build and run `mvs-texturing`, ensure the following dependencies are installe
 - **Git**  
 - **Make**  
 - **GCC/G++** >= 12  
-- **Libraries**: `libpng`, `libjpeg`, `libtiff` and `libtbb` (may not be required)
+- **Libraries**: `libpng`, `libjpeg`, `libtiff` and `libtbb`
   ```shell
   apt update && apt install libpng-dev libjpeg-dev libtiff-dev libtbb-dev
   ```
@@ -28,12 +28,19 @@ Additional dependencies are automatically downloaded and built by the system via
 
 **Note:** It may be better to update Eigen and MVE to the latest version.
 
-## Build MVS-Texturing
+## Build and Install MVS-Texturing
 
 Use the following command to build:
 
 ```
-mkdir -p build && cd build && cmake .. && make -j; cd ..
+cmake -S . -B build/ && cmake --build build/ --parallel $(nproc)
+```
+
+Use the following command to install:
+(Optional: Installing `mvs-texturing` is not required.)
+
+```
+cmake --install build/ --prefix install-mvs-texturing
 ```
 
 **TODO:** Modularize external libraries and use modern CMake
